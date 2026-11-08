@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CampusRewards | One rewards account for UCLA students and Westwood businesses</title>
+<meta name="description" content="CampusRewards is a Westwood rewards app that connects verified UCLA students with the local businesses next to campus.">
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#12315f; --blue:#1b4a86; --sky:#e8f0fb; --mist:#f5f8fd; --line:#d5e1f2;
+  --ink:#1f2f46; --muted:#52627a; --white:#fff; --gold:#fdab27;
+  --head:"Oswald","Arial Narrow",Impact,sans-serif;
+  --body:"Public Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{font-family:var(--body);color:var(--ink);background:var(--white);line-height:1.6;font-size:1.0625rem}
+img{max-width:100%;display:block}
+a{color:var(--blue)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--head);font-weight:600;text-transform:uppercase;letter-spacing:.01em;line-height:1.1;color:var(--navy)}
+h2{font-size:clamp(2rem,4.5vw,2.9rem);margin-bottom:14px}
+h3{font-size:1.4rem;margin-bottom:8px}
+.lead{max-width:60ch;color:var(--muted);font-size:1.15rem}
+section{padding:88px 0}
+.alt{background:var(--mist)}
+
+/* nav */
+header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--head);font-size:1.35rem;font-weight:600;color:var(--navy)}
+.brand img{width:40px;height:40px}
+.nav ul{display:flex;gap:26px;list-style:none;padding:0}
+.nav ul a{text-decoration:none;color:var(--ink);font-weight:500;font-size:.95rem}
+.nav ul a:hover{color:var(--blue)}
+.btn{display:inline-block;background:var(--blue);color:#fff;text-decoration:none;font-weight:600;padding:13px 24px;border-radius:10px;border:2px solid var(--blue);transition:background .15s}
+.btn:hover{background:var(--navy);border-color:var(--navy)}
+.btn.ghost{background:transparent;color:var(--blue)}
+.btn.ghost:hover{background:var(--sky);border-color:var(--blue)}
+
+/* hero */
+.hero{padding:72px 0 80px;background:linear-gradient(180deg,var(--sky),var(--white))}
+.hero .wrap{display:grid;grid-template-columns:1.25fr .75fr;gap:48px;align-items:center}
+.hero h1{font-size:clamp(2.9rem,7.5vw,5.4rem);margin-bottom:20px}
+.hero p{max-width:50ch;font-size:1.2rem;color:var(--muted);margin-bottom:30px}
+.cta{display:flex;flex-wrap:wrap;gap:14px}
+.hero img{width:100%;max-width:320px;margin:0 auto;background:#fff;border-radius:28px;padding:18px;box-shadow:0 18px 40px rgba(18,49,95,.14)}
+
+/* how it works */
+.steps{list-style:none;padding:0;margin-top:44px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;counter-reset:s}
+.steps li{position:relative;padding:0 22px 0 0;counter-increment:s}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--blue);color:#fff;font-family:var(--head);font-size:1.3rem;margin-bottom:16px;position:relative;z-index:1}
+.steps li::after{content:"";position:absolute;top:22px;left:44px;right:0;height:2px;background:var(--line)}
+.steps li:last-child::after{display:none}
+.steps b{display:block;font-weight:600;color:var(--navy);margin-bottom:4px}
+.steps span{color:var(--muted);font-size:.97rem}
+
+/* audiences */
+.tabs{display:inline-flex;background:var(--sky);border-radius:12px;padding:5px;margin:28px 0 36px}
+.tabs button{font:inherit;font-weight:600;border:0;background:transparent;color:var(--blue);padding:11px 26px;border-radius:8px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--blue);color:#fff}
+.panel[hidden]{display:none}
+.panel{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px}
+.card p{color:var(--muted);font-size:1rem}
+.panel .card:first-child{border-left:5px solid var(--blue)}
+.pain{grid-column:1/-1;background:var(--sky);border:0;border-radius:14px;padding:22px 26px;color:var(--navy);font-weight:500}
+.pain span{font-weight:400;color:var(--muted)}
+
+/* offers */
+.offers{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-top:40px}
+.offer{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;position:relative;overflow:hidden}
+.offer::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--gold)}
+.offer small{display:block;color:var(--muted);font-size:.85rem;margin-bottom:4px}
+.offer strong{font-family:var(--head);font-weight:500;font-size:1.3rem;color:var(--navy);line-height:1.2;display:block}
+
+/* analytics */
+.analytics{background:var(--navy);color:#dce8f8}
+.analytics h2{color:#fff}
+.analytics .lead{color:#b9cde8}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.analytics .col h3{color:#fff;font-size:1.25rem;margin-top:28px}
+.analytics .col p{color:#b9cde8;font-size:1rem}
+.report{background:#fff;color:var(--ink);border-radius:16px;padding:28px;box-shadow:0 24px 50px rgba(0,0,0,.25)}
+.report h3{font-size:1.1rem;color:var(--blue);margin-bottom:16px}
+.report .row{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line);font-size:.97rem}
+.report .row:last-of-type{border:0}
+.report .row b{color:var(--navy);font-weight:600;text-align:right}
+.report .note{margin-top:14px;padding:14px;background:var(--sky);border-radius:10px;font-size:.93rem;color:var(--navy)}
+.report .tag{font-size:.8rem;color:var(--muted);margin-top:12px}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:40px}
+.stat{text-align:left;border-top:4px solid var(--blue);padding-top:14px}
+.stat b{font-family:var(--head);font-weight:700;font-size:3.4rem;line-height:1;color:var(--blue);display:block}
+.stat span{color:var(--muted);font-size:.97rem}
+blockquote{margin-top:44px;max-width:62ch;padding-left:22px;border-left:5px solid var(--gold);font-size:1.15rem;color:var(--navy)}
+blockquote cite{display:block;margin-top:8px;font-style:normal;font-size:.9rem;color:var(--muted)}
+.fine{margin-top:22px;font-size:.88rem;color:var(--muted)}
+
+/* pilot */
+.pilot{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.checks{list-style:none;padding:0;margin-top:22px;display:grid;gap:14px}
+.checks li{display:flex;gap:14px;align-items:flex-start}
+.checks li::before{content:"";flex:none;width:24px;height:24px;margin-top:2px;border-radius:50%;background:var(--blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center/16px no-repeat}
+.after{background:var(--sky);border-radius:16px;padding:30px}
+.after p{color:var(--navy)}
+
+/* contact */
+.contact{background:var(--blue);color:#fff;text-align:center}
+.contact h2{color:#fff}
+.contact p{color:#d6e4f7;max-width:52ch;margin:0 auto 26px}
+.contact .btn{background:#fff;color:var(--blue);border-color:#fff}
+.contact .btn:hover{background:var(--sky)}
+.contact .btn.ghost{background:transparent;color:#fff;border-color:#fff}
+.contact .btn.ghost:hover{background:rgba(255,255,255,.14)}
+.contact .cta{justify-content:center}
+footer{padding:26px 0;text-align:center;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line)}
+
+@media(max-width:860px){
+  .nav ul{display:none}
+  .hero .wrap,.split,.pilot,.panel{grid-template-columns:1fr}
+  .hero img{max-width:210px;order:-1;margin:0}
+  .steps{grid-template-columns:1fr 1fr;gap:30px 0}
+  .steps li:nth-child(2)::after{display:none}
+  .stats{grid-template-columns:1fr 1fr}
+  section{padding:64px 0}
+}
+@media(max-width:480px){.steps{grid-template-columns:1fr}.steps li::after{display:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top"><img src="assets/logo.png" alt="">CampusRewards</a>
+    <ul>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#students-businesses">Benefits</a></li>
+      <li><a href="#analytics">Analytics</a></li>
+      <li><a href="#pilot">Free pilot</a></li>
+    </ul>
+    <a class="btn" href="#contact">Join the pilot</a>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <h1>Business is right on your doorstep</h1>
+      <p>CampusRewards is one verified account that earns rewards and unlocks offers across Westwood. Students find deals and new spots. Businesses reach thousands of UCLA students and see what it was worth.</p>
+      <div class="cta">
+        <a class="btn" href="#contact">Join the free pilot</a>
+        <a class="btn ghost" href="#how">See how it works</a>
+      </div>
+    </div>
+    <img src="assets/logo.png" alt="CampusRewards logo: a smiling C and an R with a dollar price tag">
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <h2>Earn anywhere, spend everywhere</h2>
+    <p class="lead">One wallet holds points from every participating shop, so a student can earn at Diddy Riese and spend at Milksha.</p>
+    <ol class="steps">
+      <li><b>Verify</b><span>Sign up with a UCLA email to join as a verified student.</span></li>
+      <li><b>Browse</b><span>See current offers from participating Westwood businesses in one feed.</span></li>
+      <li><b>Visit and scan</b><span>Show or scan a code at the shop to get the offer and points.</span></li>
+      <li><b>Redeem</b><span>Spend points on rewards and complete challenges for bonuses.</span></li>
+    </ol>
+  </div>
+</section>
+
+<section id="students-businesses" class="alt">
+  <div class="wrap">
+    <h2>Built for both sides of Westwood</h2>
+    <p class="lead">Students can’t find the deals. Businesses can’t reach the students. CampusRewards solves both in one place.</p>
+
+    <div class="tabs" role="tablist" aria-label="Choose audience">
+      <button role="tab" id="t-stu" aria-controls="p-stu" aria-selected="true">For students</button>
+      <button role="tab" id="t-biz" aria-controls="p-biz" aria-selected="false" tabindex="-1">For businesses</button>
+    </div>
+
+    <div class="panel" id="p-stu" role="tabpanel" aria-labelledby="t-stu">
+      <div class="pain">The problem: <span>Discounts are scattered across individual shops, punch cards get lost and only work in one place, and there’s little reason to try somewhere new.</span></div>
+      <div class="card"><h3>One account</h3><p>One verified account works across every participating business. No more stacks of punch cards.</p></div>
+      <div class="card"><h3>Rewards that travel</h3><p>Points build across visits and across shops, so you spend them where you want.</p></div>
+      <div class="card"><h3>One place to discover</h3><p>Browse every current offer in a single feed, filtered by time and goal.</p></div>
+      <div class="card"><h3>Challenges for exploring</h3><p>Visit new places and earn bonus points. Verified first visits from friends and verified reviews earn points too.</p></div>
+    </div>
+
+    <div class="panel" id="p-biz" role="tabpanel" aria-labelledby="t-biz" hidden>
+      <div class="pain">The problem: <span>Slow hours leave staff and inventory underused, delivery apps take high commissions, and most owners can’t tell whether a promotion made money.</span></div>
+      <div class="card"><h3>A verified student audience</h3><p>Your offers reach verified UCLA students, and rewards for trying new places send first-timers your way.</p></div>
+      <div class="card"><h3>Promotions aimed at slow hours</h3><p>Create and schedule offers for specific days and times, like mid-afternoons, weeknights, and school breaks.</p></div>
+      <div class="card"><h3>You stay in control</h3><p>Set point costs, hours, and redemption caps. Require a purchase, limit one redemption per student, and pause any offer instantly.</p></div>
+      <div class="card"><h3>Simple to start</h3><p>Redemptions are confirmed with QR codes and staff confirmation. No new hardware or POS integration needed at the start.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What an offer can look like</h2>
+    <p class="lead">Each shop sets its own promotions. Challenges across shops add platform-funded points.</p>
+    <div class="offers">
+      <div class="offer"><small>Restaurant A</small><strong>10% off plus 2x points for UCLA students</strong></div>
+      <div class="offer"><small>Coffee Shop B</small><strong>2x points from 2 to 4 PM</strong></div>
+      <div class="offer"><small>Restaurant C</small><strong>Free appetizer after spending $25</strong></div>
+      <div class="offer"><small>Neighborhood challenge</small><strong>Visit 3 participating restaurants, earn a $5 reward</strong></div>
+    </div>
+  </div>
+</section>
+
+<section id="analytics" class="analytics">
+  <div class="wrap split">
+    <div class="col">
+      <h2>Know if a promotion paid off</h2>
+      <p class="lead">Most owners can’t answer “Did that promotion actually make me money?” CampusRewards can.</p>
+      <h3>How we measure it</h3>
+      <p>Offers are randomized across comparable time windows, so some windows act as a control. A Bayesian model compares them to estimate the sales the platform actually caused.</p>
+      <h3>What you get</h3>
+      <p>A short, plain-language weekly report: students reached, redemptions, spend, and new versus returning customers, plus an honest estimate of extra sales and whether the promotion paid for itself.</p>
+    </div>
+    <div class="report" aria-label="Example of a weekly report layout">
+      <h3>Weekly report (sample layout)</h3>
+      <div class="row"><span>Students reached</span><b>Reported weekly</b></div>
+      <div class="row"><span>Redemptions and spend</span><b>Reported weekly</b></div>
+      <div class="row"><span>New vs. returning customers</span><b>Reported weekly</b></div>
+      <div class="row"><span>Likely range of extra sales</span><b>Estimated</b></div>
+      <div class="row"><span>Chance the promotion paid for itself</span><b>Estimated</b></div>
+      <div class="note">Redemptions that were truly new business are separated from regulars who would have come anyway.</div>
+      <p class="tag">Illustrative layout only. No pilot figures yet.</p>
+    </div>
+  </div>
+</section>
+
+<section id="students">
+  <div class="wrap">
+    <h2>What students told us</h2>
+    <p class="lead">We surveyed UCLA students about finding deals in Westwood and using a rewards app.</p>
+    <div class="stats">
+      <div class="stat"><b>90%</b><span>don’t know which Westwood places have student specials</span></div>
+      <div class="stat"><b>88%</b><span>would definitely use CampusRewards</span></div>
+      <div class="stat"><b>73%</b><span>would be motivated to visit Westwood more often</span></div>
+      <div class="stat"><b>85%</b><span>would be motivated to spend more</span></div>
+    </div>
+    <blockquote>“Westwood has a lot of shops and most don’t publish it online or students aren’t aware of it. The only way to find out is to actually go there.”<cite>UCLA student, survey response</cite></blockquote>
+    <p class="fine">80% of respondents were first-years and 60% rarely visit Westwood.</p>
+  </div>
+</section>
+
+<section id="pilot" class="alt">
+  <div class="wrap pilot">
+    <div>
+      <h2>Try a free pilot</h2>
+      <p class="lead">We’re early, so the pilot tests our assumptions. We’d rather find out in 10 weeks than assume it works.</p>
+      <ul class="checks">
+        <li>Join our app and use it any way you wish</li>
+        <li>Each redemption is confirmed by scanning a code</li>
+        <li>A results review at the end, with real numbers</li>
+        <li>No contract. Keep going or walk away</li>
+      </ul>
+    </div>
+    <div class="after">
+      <h3>After the pilot</h3>
+      <p>We’ll analyze the pilot data and gauge the platform’s effectiveness to set pricing. If you choose to stay, we’ll charge a low monthly fee plus certain variable fees.</p>
+      <h3 style="margin-top:24px">Safeguards</h3>
+      <p>Limits on reward spending, purchase verification, and business-set budgets help prevent abuse and keep you from discounting customers who would have come anyway.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="wrap">
+    <h2>Bring your business to campus</h2>
+    <p>Join the free Westwood pilot and see what CampusRewards brings you.</p>
+    <div class="cta">
+      <a class="btn" href="mailto:campusrewards.ucla@gmail.com">campusrewards.ucla@gmail.com</a>
+      <a class="btn ghost" href="tel:+16513542595">(651) 354-2595</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>© 2026 CampusRewards. A Westwood rewards app for UCLA students and local businesses.</footer>
+
+<script>
+(function(){
+  var tabs=[].slice.call(document.querySelectorAll('[role=tab]'));
+  function show(t){
+    tabs.forEach(function(b){
+      var on=b===t;
+      b.setAttribute('aria-selected',on);
+      b.tabIndex=on?0:-1;
+      document.getElementById(b.getAttribute('aria-controls')).hidden=!on;
+    });
+  }
+  tabs.forEach(function(b,i){
+    b.addEventListener('click',function(){show(b)});
+    b.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+        var n=tabs[(i+1)%tabs.length];n.focus();show(n);
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

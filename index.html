@@ -35,9 +35,10 @@ header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdro
 .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--head);font-size:1.35rem;font-weight:600;color:var(--navy)}
 .brand img{width:40px;height:40px}
-.nav ul{display:flex;gap:26px;list-style:none;padding:0}
+.nav ul{display:flex;gap:24px;list-style:none;padding:0;position:relative}
 .nav ul a{text-decoration:none;color:var(--ink);font-weight:500;font-size:.95rem}
-.nav ul a:hover{color:var(--blue)}
+.nav ul a:hover,.nav ul a[aria-current]{color:var(--blue)}
+.nav-ind{position:absolute;bottom:-8px;left:0;height:4px;width:0;border-radius:4px;background:var(--gold);opacity:0;transition:left .35s cubic-bezier(.4,0,.2,1),width .35s cubic-bezier(.4,0,.2,1),opacity .2s;pointer-events:none}
 .btn{display:inline-block;background:var(--blue);color:#fff;text-decoration:none;font-weight:600;padding:13px 24px;border-radius:10px;border:2px solid var(--blue);transition:background .15s}
 .btn:hover{background:var(--navy);border-color:var(--navy)}
 .btn.ghost{background:transparent;color:var(--blue)}
@@ -61,9 +62,11 @@ header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdro
 .steps span{color:var(--muted);font-size:.97rem}
 
 /* audiences */
-.tabs{display:inline-flex;background:var(--sky);border-radius:12px;padding:5px;margin:28px 0 36px}
-.tabs button{font:inherit;font-weight:600;border:0;background:transparent;color:var(--blue);padding:11px 26px;border-radius:8px;cursor:pointer}
-.tabs button[aria-selected="true"]{background:var(--blue);color:#fff}
+.tabs{display:inline-flex;position:relative;background:var(--sky);border-radius:12px;padding:5px;margin:28px 0 36px}
+.pill{position:absolute;top:5px;bottom:5px;left:5px;width:0;border-radius:8px;background:var(--blue);transition:left .3s cubic-bezier(.4,0,.2,1),width .3s cubic-bezier(.4,0,.2,1)}
+.tabs button{position:relative;z-index:1;font:inherit;font-weight:600;border:0;background:transparent;color:var(--blue);padding:11px 26px;border-radius:8px;cursor:pointer;transition:color .2s}
+.tabs button[aria-selected="true"]{color:#fff}
+.tabs:not(.has-pill) button[aria-selected="true"]{background:var(--blue)}
 .panel[hidden]{display:none}
 .panel{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px}
@@ -144,6 +147,7 @@ footer{padding:26px 0;text-align:center;color:var(--muted);font-size:.9rem;borde
       <li><a href="#how">How it works</a></li>
       <li><a href="#students-businesses">Benefits</a></li>
       <li><a href="#analytics">Analytics</a></li>
+      <li><a href="#students">Student survey</a></li>
       <li><a href="#pilot">Free pilot</a></li>
     </ul>
     <a class="btn" href="#contact">Join the pilot</a>
@@ -206,7 +210,7 @@ footer{padding:26px 0;text-align:center;color:var(--muted);font-size:.9rem;borde
   </div>
 </section>
 
-<section>
+<section id="offers" data-nav="students-businesses">
   <div class="wrap">
     <h2>What an offer can look like</h2>
     <p class="lead">Each shop sets its own promotions. Challenges across shops add platform-funded points.</p>
@@ -311,6 +315,50 @@ footer{padding:26px 0;text-align:center;color:var(--muted);font-size:.9rem;borde
       }
     });
   });
+})();
+</script>
+<script>
+/* Moving indicators: a gold bar follows the section you're viewing in the top nav, and a pill slides between the student/business tabs. */
+(function(){
+  var ul=document.querySelector('.nav ul');
+  var links=[].slice.call(ul.querySelectorAll('a'));
+  var ind=document.createElement('span');ind.className='nav-ind';ind.setAttribute('aria-hidden','true');ul.appendChild(ind);
+  var secs=[].slice.call(document.querySelectorAll('main section[id]')).map(function(s){
+    var key=s.getAttribute('data-nav')||s.id;
+    return {el:s,link:ul.querySelector('a[href="#'+key+'"]')};
+  });
+  var current=null;
+  function place(a){
+    links.forEach(function(l){l.removeAttribute('aria-current')});
+    if(!a){ind.style.opacity=0;return}
+    a.setAttribute('aria-current','true');
+    ind.style.left=a.offsetLeft+'px';ind.style.width=a.offsetWidth+'px';ind.style.opacity=1;
+  }
+  function spy(){
+    var y=120,found=null;
+    secs.forEach(function(s){if(s.el.getBoundingClientRect().top<=y)found=s});
+    var a=found?found.link:null;
+    if(a!==current){current=a;place(a)}
+  }
+  var tick=false;
+  window.addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(function(){tick=false;spy()})}},{passive:true});
+  window.addEventListener('resize',function(){place(current)});
+  window.addEventListener('load',function(){place(current)});
+  spy();
+
+  var tabs=document.querySelector('.tabs');
+  var pill=document.createElement('span');pill.className='pill';pill.setAttribute('aria-hidden','true');
+  tabs.insertBefore(pill,tabs.firstChild);
+  function move(){
+    var b=tabs.querySelector('[aria-selected="true"]');
+    if(!b)return;
+    pill.style.left=b.offsetLeft+'px';pill.style.width=b.offsetWidth+'px';
+    tabs.classList.add('has-pill');
+  }
+  new MutationObserver(move).observe(tabs,{attributes:true,attributeFilter:['aria-selected'],subtree:true});
+  window.addEventListener('resize',move);
+  window.addEventListener('load',move);
+  move();
 })();
 </script>
 <script>

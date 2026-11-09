@@ -135,6 +135,16 @@ footer{padding:26px 0;text-align:center;color:var(--muted);font-size:.9rem;borde
   section{padding:64px 0}
 }
 @media(max-width:480px){.steps{grid-template-columns:1fr}.steps li::after{display:none}}
+.nav-btn{white-space:nowrap;flex:none}
+.brand{min-width:0;white-space:nowrap}
+@media(max-width:600px){
+  .wrap{padding:0 16px}
+  .nav{gap:10px}
+  .brand{font-size:1.15rem;gap:8px}
+  .brand img{width:34px;height:34px}
+  .nav-btn{padding:9px 16px;font-size:.9rem;border-radius:8px}
+}
+@media(max-width:370px){.nav-btn .the{display:none}.brand{font-size:1.05rem}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 </style>
 </head>
@@ -150,7 +160,7 @@ footer{padding:26px 0;text-align:center;color:var(--muted);font-size:.9rem;borde
       <li><a href="#students">Student survey</a></li>
       <li><a href="#pilot">Free pilot</a></li>
     </ul>
-    <a class="btn" href="#contact">Join the pilot</a>
+    <a class="btn nav-btn" href="#contact">Join<span class="the"> the</span> pilot</a>
   </div>
 </header>
 
